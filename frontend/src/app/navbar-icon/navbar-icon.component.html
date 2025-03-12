@@ -1,15 +1,24 @@
 <a [routerLink]="link" class="group flex items-center text-secondary">
-    <div routerLinkActive="text-primary " [routerLinkActiveOptions]="{ exact: true }"
-      class="m-2 p-2 flex items-center gap-3 bg-base-200
-      w-10 hover:w-32 hover:bg-base-300 shadow-md hover:shadow-primary
-      transition-all duration-500 ease-in-out transform hover:scale-105 relative overflow-hidden
-      rounded-[50%] hover:rounded-md">
-      
-      <span class="material-icons text-lg">{{ icon }}</span>
+  <div 
+    routerLinkActive #rla="routerLinkActive"
+    [routerLinkActiveOptions]="{ exact: true }"
+    [ngClass]="{
+      'text-primary shadow-primary': rla.isActive, 
+      'text-secondary': !rla.isActive,
+      'hover:shadow-primary': rla.isActive, 
+      'hover:shadow-secondary': !rla.isActive
+    }"
+    class="m-2 p-2 flex items-center gap-3 bg-base-200
+           w-10 hover:w-32 hover:bg-base-300
+           transition-all duration-500 ease-in-out transform hover:scale-105 relative overflow-hidden
+           rounded-[50%] hover:rounded-md shadow-md">
+    
+    <span class="material-icons text-lg">{{ icon }}</span>
 
-      <span class="absolute left-12 opacity-0 transition-opacity duration-300 delay-300 group-hover:opacity-100 
-        group-hover:delay-0">
-        {{ text }}
-      </span>
-    </div>
+    <span class="absolute left-12 opacity-0 transition-opacity duration-300 delay-300 
+      group-hover:opacity-100 group-hover:delay-0">
+      {{ text }}
+    </span>
+    
+  </div>
 </a>

@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { RouterModule, RouterLink, RouterLinkActive } from '@angular/router';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-navbar-icon',
   standalone: true, // ✅ Standalone component
-  imports: [RouterModule, RouterLink, RouterLinkActive], // ✅ Import necessary modules
+  imports: [RouterModule, RouterLink, RouterLinkActive, NgClass], // ✅ Import necessary modules
   templateUrl: './navbar-icon.component.html',
   styleUrl: './navbar-icon.component.css'
 })
