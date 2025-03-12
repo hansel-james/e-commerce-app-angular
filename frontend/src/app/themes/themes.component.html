@@ -1,24 +1,25 @@
 <div class="w-full flex justify-center">
     <div class="w-3/4 p-4 pb-8 rounded-4xl m-4 flex flex-col items-center gap-4 bg-base-300">
-        <p class="text-primary text-2xl font-bold text-center">Select your theme!</p>
+        <p class="text-2xl font-bold text-center">Select your theme!</p>
 
         <div class="w-full flex flex-wrap justify-center gap-4">
             @for (theme of themes; track theme) {
-                <div class="flex flex-col items-center gap-2 bg-base-100 rounded-md shadow-lg shadow-neutral
-                    hover:bg-base-300 transition-all duration-300 hover:shadow-primary cursor-pointer"
+                <button class="flex flex-col items-center gap-2 bg-base-100 rounded-md shadow-lg shadow-neutral
+                    hover:bg-base-300 transition-all duration-300 hover:shadow-primary cursor-pointer
+                    active:shadow-2xs active:scale-95 active:duration-75"
                     [attr.data-theme]="theme"
                     (click)="handleThemeChange(theme)">
                     
-                    <p class="text-primary text-xl font-semibold">{{ theme }}</p>
-                    <div class="relative h-8 w-32 rounded-md overflow-hidden">
-                        <div class="absolute inset-0 grid grid-cols-4 gap-px p-1">
-                            <div class="rounded bg-primary w-full h-full"></div>
-                            <div class="rounded bg-secondary w-full h-full"></div>
-                            <div class="rounded bg-accent w-full h-full"></div>
-                            <div class="rounded bg-neutral w-full h-full"></div>
+                    <p class="text-base-content text-xl font-semibold">{{ theme }}</p>
+                    <div class="relative h-8 w-32 rounded-md overflow-hidden p-1 bg-base-300">
+                        <div class="grid grid-cols-4 gap-px w-full h-full">
+                            <div class="rounded bg-primary"></div>
+                            <div class="rounded bg-secondary"></div>
+                            <div class="rounded bg-accent"></div>
+                            <div class="rounded bg-neutral"></div>
                         </div>
-                    </div>
-                </div>
+                    </div>                    
+                </button>
             }
         </div>
     </div>

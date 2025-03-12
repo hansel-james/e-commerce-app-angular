@@ -1,6 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Basic&family=Electrolize&family=Lekton:ital,wght@0,400;0,700;1,400&family=Livvic:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,900&family=Merienda:wght@300&display=swap');
 @import "tailwindcss";
+
 @plugin "daisyui" {
     themes: all;
-    include: input, color;
+    include: input, color, button, card, radio, badge, text, list;
+}
+
+@theme {
+    --font-lekton: "Lekton", sans-serif;
+    --font-merienda: "Merienda", sans-serif;
+    --font-livvic: "Livvic", sans-serif;
+    --font-electrolize: "Electrolize", sans-serif;
+    --font-basic: "Basic", sans-serif;
 }
