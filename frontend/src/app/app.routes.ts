@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
 import { ThemesComponent } from './themes/themes.component';
-import { ProductCardComponent } from './products/product-card/product-card.component';
 import { ProductsComponent } from './products/products.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
     {
-        path: '', component: ThemesComponent
+        path: '', component: HomeComponent
     },
     {
         path: 'themes', component: ThemesComponent
@@ -13,5 +14,9 @@ export const routes: Routes = [
     {
         path: 'products',
         component: ProductsComponent
-    }
+    },
+    { 
+        path: '**', 
+        component: NotFoundComponent 
+    }, 
 ];
