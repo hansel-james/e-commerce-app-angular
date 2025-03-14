@@ -7,14 +7,15 @@ import { Component, ElementRef, ViewChildren, QueryList, Renderer2, AfterViewIni
 })
 export class HomeComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
   @ViewChildren('movableText') movableTextElements!: QueryList<ElementRef>;
+  @ViewChildren('welcomeText') welcomeTextElements!: QueryList<ElementRef>;
   @ViewChild('touchBox') touchBox!: ElementRef;
   @ViewChild('carousel') carousel!: ElementRef;
-  @ViewChild('welcomeText') welcomeText!: ElementRef;
+  
 
   private textListeners = new Map<HTMLElement, (() => void)[]>();
+  private welcomeTextListeners = new Map<HTMLElement, (() => void)[]>();
   private touchBoxListeners: (() => void)[] = [];
   private carouselListeners: (() => void)[] = [];
-  private welcomeTextListeners: (() => void)[] = [];
 
   constructor(private renderer: Renderer2) {}
 
@@ -40,77 +41,84 @@ export class HomeComponent implements AfterViewInit, AfterViewChecked, OnDestroy
   }
 
   private initializeWelcomeText() {
-    if (!this.welcomeText) return;
-  
+    if (!this.welcomeTextElements || this.welcomeTextElements.length === 0) return;
+
     this.cleanupWelcomeTextListeners();
-  
-    const textBlock = this.welcomeText.nativeElement;
-    const pointer = textBlock.querySelector('.pointer');
-  
-    if (!pointer) {
-      console.error("Pointer element not found inside welcomeText!");
-      return;
-    }
-  
-    // Smooth motion for regular movement, disabled for first appearance
-    this.renderer.setStyle(pointer, 'transition', 'transform 0.1s ease-out, opacity 0.2s');
-  
-    const movePointer = (event: MouseEvent | TouchEvent, instant = false) => {
-      const rect = textBlock.getBoundingClientRect();
-      let clientX, clientY;
-  
-      if (event instanceof MouseEvent) {
-        clientX = event.clientX;
-        clientY = event.clientY;
-      } else {
-        clientX = event.touches[0].clientX;
-        clientY = event.touches[0].clientY;
-      }
-  
-      // Offset calculations (relative to center)
-      const offsetX = clientX - rect.left - rect.width / 2;
-      const offsetY = clientY - rect.top - rect.height / 2;
-  
-      if (instant) {
-        this.renderer.setStyle(pointer, 'transition', 'none'); // Disable transition
-      } else {
-        this.renderer.setStyle(pointer, 'transition', 'transform 0.1s ease-out');
-      }
-  
-      this.renderer.setStyle(pointer, 'transform', `translate(${offsetX}px, ${offsetY}px)`);
-    };
-  
-    const showPointer = (event: MouseEvent | TouchEvent) => {
-      movePointer(event, true); // Instantly position the pointer
-      this.renderer.setStyle(pointer, 'opacity', '1');
-    };
-  
-    const hidePointer = () => {
-      this.renderer.setStyle(pointer, 'opacity', '0');
-    };
-  
-    // Mouse events
-    const mouseMoveListener = this.renderer.listen(textBlock, 'mousemove', movePointer);
-    const mouseEnterListener = this.renderer.listen(textBlock, 'mouseenter', showPointer);
-    const mouseLeaveListener = this.renderer.listen(textBlock, 'mouseleave', hidePointer);
-  
-    // Touch events
-    const touchMoveListener = this.renderer.listen(textBlock, 'touchmove', (event) => {
-      event.preventDefault();
-      movePointer(event);
+
+    this.welcomeTextElements.forEach((textElementRef) => {
+        const textBlock = textElementRef.nativeElement;
+        const pointer = textBlock.querySelector('.pointer');
+
+        if (!pointer) {
+            console.error("Pointer element not found inside welcomeText!");
+            return;
+        }
+
+        // Smooth motion for regular movement, disabled for first appearance
+        this.renderer.setStyle(pointer, 'transition', 'transform 0.1s ease-out, opacity 0.2s');
+
+        const movePointer = (event: MouseEvent | TouchEvent, instant = false) => {
+            const rect = textBlock.getBoundingClientRect();
+            let clientX, clientY;
+
+            if (event instanceof MouseEvent) {
+                clientX = event.clientX;
+                clientY = event.clientY;
+            } else {
+                clientX = event.touches[0].clientX;
+                clientY = event.touches[0].clientY;
+            }
+
+            // Offset calculations (relative to center)
+            const offsetX = clientX - rect.left - rect.width / 2;
+            const offsetY = clientY - rect.top - rect.height / 2;
+
+            const moveX = (offsetX / rect.width) * 50; // Hardcoded value
+            const moveY = (offsetY / rect.height) * 50;
+
+            if (instant) {
+                this.renderer.setStyle(pointer, 'transition', 'none'); // Disable transition
+            } else {
+                this.renderer.setStyle(pointer, 'transition', 'transform 0.1s ease-out');
+            }
+
+            this.renderer.setStyle(pointer, 'transform', `translate(${offsetX - moveX}px, ${offsetY - moveY}px)`);
+        };
+
+        const showPointer = (event: MouseEvent | TouchEvent) => {
+            movePointer(event, true); // Instantly position the pointer
+            this.renderer.setStyle(pointer, 'opacity', '1');
+            this.renderer.setStyle(textBlock, 'cursor', 'none'); // Hide default cursor
+        };
+
+        const hidePointer = () => {
+            this.renderer.setStyle(pointer, 'opacity', '0');
+            this.renderer.setStyle(textBlock, 'cursor', 'auto'); // Restore default cursor
+        };
+
+        // Mouse events
+        const mouseMoveListener = this.renderer.listen(textBlock, 'mousemove', movePointer);
+        const mouseEnterListener = this.renderer.listen(textBlock, 'mouseenter', showPointer);
+        const mouseLeaveListener = this.renderer.listen(textBlock, 'mouseleave', hidePointer);
+
+        // Touch events
+        const touchMoveListener = this.renderer.listen(textBlock, 'touchmove', (event) => {
+            event.preventDefault();
+            movePointer(event);
+        });
+        const touchStartListener = this.renderer.listen(textBlock, 'touchstart', showPointer);
+        const touchEndListener = this.renderer.listen(textBlock, 'touchend', hidePointer);
+
+        this.welcomeTextListeners.set(textBlock, [
+            mouseMoveListener,
+            mouseEnterListener,
+            mouseLeaveListener,
+            touchMoveListener,
+            touchStartListener,
+            touchEndListener,
+        ]);
     });
-    const touchStartListener = this.renderer.listen(textBlock, 'touchstart', showPointer);
-    const touchEndListener = this.renderer.listen(textBlock, 'touchend', hidePointer);
-  
-    this.welcomeTextListeners.push(
-      mouseMoveListener, 
-      mouseEnterListener, 
-      mouseLeaveListener, 
-      touchMoveListener, 
-      touchStartListener, 
-      touchEndListener
-    );
-  }  
+  }
 
   private initializeMovableText() {
     this.movableTextElements.forEach((textElementRef) => {
@@ -238,6 +246,13 @@ export class HomeComponent implements AfterViewInit, AfterViewChecked, OnDestroy
     this.textListeners.clear();
   }
 
+  private cleanupWelcomeTextListeners() {
+    this.welcomeTextListeners.forEach((listeners, element) => {
+      listeners.forEach((removeListener) => removeListener());
+    });
+    this.welcomeTextListeners.clear();
+  }
+
   private cleanupTouchBoxListeners() {
     this.touchBoxListeners.forEach((removeListener) => removeListener());
     this.touchBoxListeners = [];
@@ -246,9 +261,5 @@ export class HomeComponent implements AfterViewInit, AfterViewChecked, OnDestroy
   private cleanupCarouselListeners() {
     this.carouselListeners.forEach((removeListener) => removeListener());
     this.carouselListeners = [];
-  }
-  private cleanupWelcomeTextListeners() {
-    this.welcomeTextListeners.forEach((removeListener) => removeListener());
-    this.welcomeTextListeners = [];
   }
 }
