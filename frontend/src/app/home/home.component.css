@@ -1,3 +1,6 @@
-.movable {
-    transition: transform 1s ease-out;
-  }  
+.pointer {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  transform: translate(-50%, -50%);
+}
