@@ -9,13 +9,13 @@
             Welcome to our App!
         </p>
     </div>
-    <div id="touchBox" class="border-4 rounded-2xl m-4 shadow-lg hover:border-primary active:border-primary transition-all duration-75 overflow-hidden">
+    <div #touchBox class="border-4 rounded-2xl m-4 shadow-lg hover:border-primary active:border-primary transition-all duration-75 overflow-hidden">
         <!-- Browse Products Text -->
         <p #movableText data-val="15" class="m-6 mt-2 mb-0 p-4 text-2xl duration-500 ease-out 
             hover:text-primary active:text-primary font-semibold text-center">
             Browse Products
         </p>          
-        <div class="m-6 mt-0 carousel carousel-center bg-base-300 rounded-box 
+        <div #carousel class="m-6 mt-0 carousel carousel-center bg-base-300 rounded-box 
             shadow-sm shadow-accent space-x-4 p-4
             hover:shadow-lg hover:shadow-secondary active:shadow-lg active:shadow-secondary
             transition-all duration-150">
@@ -68,18 +68,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    const touchBox = document.getElementById("touchBox");
-  
-    touchBox.addEventListener("touchstart", () => {
-      touchBox.classList.add("border-primary");
-    });
-    touchBox.addEventListener("touchmove", () => {
-      touchBox.classList.add("border-primary");
-    });
-  
-    touchBox.addEventListener("touchend", () => {
-      setTimeout(() => touchBox.classList.remove("border-primary"), 200);
-    });
-</script>
