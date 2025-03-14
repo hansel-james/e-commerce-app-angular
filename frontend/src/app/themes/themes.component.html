@@ -4,9 +4,9 @@
 
         <div class="w-full flex flex-wrap justify-center gap-4">
             @for (theme of themes; track theme) {
-                <button class="flex flex-col items-center gap-2 bg-base-100 rounded-md shadow-lg shadow-neutral
+                <button class="flex flex-col items-center gap-2 bg-base-100 rounded-md shadow-lg shadow-neutral not-lg:shadow-primary
                     hover:bg-base-300 transition-all duration-300 hover:shadow-primary cursor-pointer
-                    active:shadow-2xs active:bg-base-300 active:scale-95 active:duration-75"
+                    active:shadow-2xs active:scale-95 active:duration-75"
                     [attr.data-theme]="theme"
                     (click)="handleThemeChange(theme)">
                     
