@@ -52,6 +52,7 @@ export class HomeComponent implements AfterViewInit, AfterViewChecked {
       this.renderer.listen(textElement, 'mousemove', moveAway);
       this.renderer.listen(textElement, 'mouseleave', resetPosition);
       this.renderer.listen(textElement, 'touchstart', moveAway);
+      this.renderer.listen(textElement, 'touchmove', moveAway);
       this.renderer.listen(textElement, 'touchend', resetPosition);
     });
   }

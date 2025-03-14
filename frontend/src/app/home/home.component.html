@@ -75,6 +75,9 @@
     touchBox.addEventListener("touchstart", () => {
       touchBox.classList.add("border-primary");
     });
+    touchBox.addEventListener("touchmove", () => {
+      touchBox.classList.add("border-primary");
+    });
   
     touchBox.addEventListener("touchend", () => {
       setTimeout(() => touchBox.classList.remove("border-primary"), 200);
