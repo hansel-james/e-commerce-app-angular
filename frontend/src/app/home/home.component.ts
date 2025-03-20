@@ -10,7 +10,9 @@ export class HomeComponent implements AfterViewInit, AfterViewChecked, OnDestroy
   @ViewChildren('welcomeText') welcomeTextElements!: QueryList<ElementRef>;
   @ViewChild('touchBox') touchBox!: ElementRef;
   @ViewChild('carousel') carousel!: ElementRef;
-  
+
+  left: string = ''
+  right: string = ''
 
   private textListeners = new Map<HTMLElement, (() => void)[]>();
   private welcomeTextListeners = new Map<HTMLElement, (() => void)[]>();
@@ -69,12 +71,10 @@ export class HomeComponent implements AfterViewInit, AfterViewChecked, OnDestroy
                 clientY = event.touches[0].clientY;
             }
 
-            // Offset calculations (relative to center)
             const offsetX = clientX - rect.left - rect.width / 2;
             const offsetY = clientY - rect.top - rect.height / 2;
-
-            const moveX = (offsetX / rect.width) * 50; // Hardcoded value
-            const moveY = (offsetY / rect.height) * 50;
+            const moveX = (offsetX / rect.width) * 45;
+            const moveY = (offsetY / rect.height) * 45;
 
             if (instant) {
                 this.renderer.setStyle(pointer, 'transition', 'none'); // Disable transition

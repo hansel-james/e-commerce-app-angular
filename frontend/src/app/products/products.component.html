@@ -1,32 +1,32 @@
-<div class="flex flex-wrap gap-8 p-8 justify-center">
-    <app-product-card link="/themes"/>
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
-    <app-product-card />
+<div class="w-auto flex p-4 justify-center">
+    <p>Showing page {{ currentPage }} of {{ totalPages }} </p>
+</div>
+
+<div class="flex justify-center not-lg:flex-col not-lg:items-center w-full">
+    <!-- Sidebar container -->
+    <div class="min-w-[250px] flex-shrink-0 not-lg:w-full not-lg:flex not-lg:justify-center">
+        <app-product-sidebar></app-product-sidebar>
+    </div>
+
+    <!-- Products container -->
+    <div class="flex-1 p-8 not-lg:w-full not-md:flex not-lg:justify-center">
+        @if (isLoading) {
+            <p class="text-center text-lg font-bold">Loading products...</p>
+        } @else {
+            @if (products.length > 0) {
+                <div class="grid gap-6 justify-center"
+                     style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                    @for (product of products; track product._id) {
+                        <app-product-card 
+                            class="min-w-[250px]" 
+                            [product]="product"
+                            [link]="'/products/' + product._id">
+                        </app-product-card>
+                    }
+                </div>
+            } @else {
+                <p class="text-center text-lg font-bold">No products found.</p>
+            }
+        }
+    </div>
 </div>

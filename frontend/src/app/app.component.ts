@@ -3,13 +3,15 @@ import { ThemeService } from './services/theme.service';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { NavbarIconComponent } from "./navbar-icon/navbar-icon.component";
 import { filter } from 'rxjs';
+import { SearchComponent } from './search/search.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  imports: [RouterModule, NavbarIconComponent]
+  imports: [RouterModule, NavbarIconComponent, SearchComponent, FormsModule]
 })
 export class AppComponent {
   private themeService = inject(ThemeService);
@@ -41,7 +43,7 @@ export class AppComponent {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
-      this.isProductsPage.set(event.url === '/products');
-    });
+      this.isProductsPage.set(event.url.startsWith('/products')); // ✅ Checks for /products and any subpage
+    });    
   }
 }

@@ -13,4 +13,8 @@ export class NavbarIconComponent {
   @Input() link: string = ''; // ✅ Navigation link
   @Input() icon: string = ''; // ✅ Icon class
   @Input() text: string = ''; // ✅ Text label
+
+  getRouterLinkActiveOptions() {
+    return this.link === '/products' ? { exact: false } : { exact: true };
+  }
 }
