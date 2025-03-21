@@ -1,7 +1,7 @@
 <a [routerLink]="link" class="group flex items-center text-secondary">
   <div 
     routerLinkActive #rla="routerLinkActive"
-    [routerLinkActiveOptions]="getRouterLinkActiveOptions()"
+    [routerLinkActiveOptions]="{ exact: link.startsWith('/products') ? false : true }"
     [ngClass]="{
       'text-primary shadow-primary': rla.isActive, 
       'text-secondary': !rla.isActive,
