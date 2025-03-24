@@ -54,9 +54,12 @@ export class AuthGuard implements CanActivate {
 
   signUp(username: string, password: string): void {
     this.http.post(`${this.apiUrl}/signup`, { username, password }).subscribe({
-      next: () => {
+      next: (response: any) => {
         console.log('Signup successful');
-
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.setItem('token', response.token);
+        }
+        this.isLoggedIn = true;
         // After successful signup, redirect to callback URL
         const callbackUrl = this.route.snapshot.queryParams['callback'] || '/';
         this.router.navigateByUrl(callbackUrl);
