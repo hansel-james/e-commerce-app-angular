@@ -4,7 +4,7 @@
         <div class="grid gap-6 justify-center"
             style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
             @for (item of cart.items; track item.product._id) {
-                <div class="card w-full bg-base-100 shadow-xl transition-all duration-300 hover:scale-105">
+                <div class="card w-full bg-base-100 shadow-xl hover:shadow-primary not-lg:shadow-primary transition-all duration-300 hover:scale-105">
                     <div class="card-body">
                         <h2 class="card-title font-bold">{{ item.product.name }}</h2>
                         <p>Price: ${{ item.product.price }}</p>
