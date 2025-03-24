@@ -1,22 +1,21 @@
 import { Routes } from '@angular/router';
-import { ThemesComponent } from './themes/themes.component';
-import { ProductsComponent } from './products/products.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './auth.guard';
+import { ProfileComponent } from './profile/profile.component';
 
 export const routes: Routes = [
-    {
-        path: '', component: HomeComponent
-    },
-    {
-        path: 'themes', component: ThemesComponent
-    },
-    {
-        path: 'products',
-        component: ProductsComponent
+    { path: '', component: HomeComponent },
+    { 
+        path: 'profile', 
+        component: ProfileComponent,
+        canActivate: [AuthGuard],
     },
     { 
-        path: '**', 
-        component: NotFoundComponent 
-    }, 
+        path: 'products',
+        loadComponent: () => import('./products/products.component').then(m => m.ProductsComponent) // ✅ Lazy load component
+    },
+    { path: 'login', component: LoginComponent },
+    { path: '**', component: NotFoundComponent }, 
 ];

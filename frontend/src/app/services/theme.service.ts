@@ -4,7 +4,7 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root'
 })
 export class ThemeService {
-  private readonly defaultTheme = 'synthwave'; // ✅ Fallback theme
+  private readonly defaultTheme = 'winter'; // ✅ Fallback theme
   selectedTheme = signal<string>(this.defaultTheme); // ✅ Initialize with default, update later
 
   constructor() {

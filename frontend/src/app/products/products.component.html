@@ -11,7 +11,12 @@
     <!-- Products container -->
     <div class="flex-1 p-8 not-lg:w-full not-md:flex not-lg:justify-center">
         @if (isLoading) {
-            <p class="text-center text-lg font-bold">Loading products...</p>
+            <div class="grid gap-6 justify-center"
+                 style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                 @for (i of skeletonArray; track i) {
+                    <app-product-card-skeleton />
+                }                
+            </div>
         } @else {
             @if (products.length > 0) {
                 <div class="grid gap-6 justify-center"

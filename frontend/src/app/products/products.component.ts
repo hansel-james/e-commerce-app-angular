@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProductCardComponent } from './product-card/product-card.component';
+import { ProductCardSkeletonComponent } from './product-card-skeleton/product-card-skeleton.component';
 import { ProductSidebarComponent } from './product-sidebar/product-sidebar.component';
 import { ProductService } from '../services/product.service';
 
@@ -9,7 +10,7 @@ import { ProductService } from '../services/product.service';
   selector: 'app-products',
   templateUrl: './products.component.html',
   standalone: true,
-  imports: [ProductCardComponent, ProductSidebarComponent], 
+  imports: [ProductCardComponent, ProductSidebarComponent, ProductCardSkeletonComponent], 
   styleUrls: ['./products.component.css'],
 })
 export class ProductsComponent implements OnInit, OnDestroy {  
@@ -18,11 +19,14 @@ export class ProductsComponent implements OnInit, OnDestroy {
   currentPage: number = 1;
   isLoading = true;
   private queryParamsSubscription!: Subscription;
+  skeletonArray: number[] = [];
 
   constructor(
     private productService: ProductService,
     private route: ActivatedRoute,
   ) {}
+  
+  limit = 10;
 
   ngOnInit(): void {
     // ✅ Subscribe to queryParams instead of router.events
@@ -32,6 +36,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
     // Initial fetch (if URL already has queryParams)
     this.loadProducts(this.route.snapshot.queryParams);
+
+    this.limit = Number(this.route.snapshot.queryParamMap.get('limit')) || 10;
+
+    this.skeletonArray = Array.from({ length: this.limit }, (_, i) => i); // Create array of indexes
+
   }
 
   loadProducts(queryParams: { [key: string]: string } = {}): void {

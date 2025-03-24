@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChildren, QueryList, Renderer2, AfterViewInit, AfterViewChecked, ViewChild, OnDestroy } from '@angular/core';
+import { ProductService } from '../services/product.service';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +20,7 @@ export class HomeComponent implements AfterViewInit, AfterViewChecked, OnDestroy
   private touchBoxListeners: (() => void)[] = [];
   private carouselListeners: (() => void)[] = [];
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2, private productService: ProductService) {}
 
   ngAfterViewInit() {
     this.initializeMovableText();
@@ -149,14 +150,11 @@ export class HomeComponent implements AfterViewInit, AfterViewChecked, OnDestroy
 
       const applyStyles = () => {
         this.renderer.addClass(textElement, 'text-secondary');
-        this.renderer.addClass(textElement, 'shadow-xs');
-        this.renderer.addClass(textElement, 'shadow-accent');
       };
 
       const resetPosition = () => {
         this.renderer.setStyle(textElement, 'transform', 'translate(0, 0)');
         this.renderer.removeClass(textElement, 'text-secondary');
-        this.renderer.removeClass(textElement, 'shadow-xs');
       };
 
       const mouseMoveListener = this.renderer.listen(textElement, 'mousemove', moveAway);
