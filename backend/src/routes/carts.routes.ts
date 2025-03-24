@@ -1,30 +1,16 @@
-import express from 'express';
+import express from "express";
+import { getCart, buyCart, addToCart, removeFromCart } from "../controllers/cart.controller";
 
 const router = express.Router();
 
-// Get all carts
-router.get('/', (req, res) => {
-  res.json({ message: 'Get all carts' });
-});
+// GET /api/carts/:userId - Fetch user's cart
+router.get("/:userId", getCart);
 
-// Get a cart by ID
-router.get('/:id', (req, res) => {
-  res.json({ message: `Get cart with ID ${req.params.id}` });
-});
+// POST /api/carts/:userId/buy - Mark cart as sold
+router.post("/:userId/buy", buyCart);
 
-// Create a new cart
-router.post('/', (req, res) => {
-  res.json({ message: 'Create a new cart' });
-});
+router.post("/add", addToCart);
 
-// Update cart
-router.put('/:id', (req, res) => {
-  res.json({ message: `Update cart with ID ${req.params.id}` });
-});
-
-// Delete cart
-router.delete('/:id', (req, res) => {
-  res.json({ message: `Delete cart with ID ${req.params.id}` });
-});
+router.post("/remove", removeFromCart);
 
 export default router;

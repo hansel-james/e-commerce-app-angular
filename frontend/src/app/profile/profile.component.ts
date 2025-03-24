@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ThemesComponent } from "./themes/themes.component";
+import { AuthGuard } from '../auth.guard';
 
 @Component({
   selector: 'app-profile',
@@ -9,4 +10,9 @@ import { ThemesComponent } from "./themes/themes.component";
 })
 export class ProfileComponent {
 
+  constructor(private authGuard: AuthGuard) {}
+
+  logout() {
+    this.authGuard.logout();
+  }
 }

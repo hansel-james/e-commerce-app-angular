@@ -1,28 +1,38 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
-interface Order extends Document {
-  userId: Types.ObjectId;
-  cartId: Types.ObjectId;
-  shippingAddress: string;
-  paymentStatus: "pending" | "paid";
-  orderStatus: "pending" | "shipped" | "delivered";
+// Define the Cart Item interface
+interface CartItem {
+  product: mongoose.Schema.Types.ObjectId; // Reference to Product
+  quantity: number;
+}
+
+// Define the Cart interface
+interface Cart extends Document {
+  userId: mongoose.Schema.Types.ObjectId; // Reference to User
+  items: CartItem[];
   totalPrice: number;
+  sold: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
-const orderSchema = new Schema<Order>(
+// Define the Cart schema
+const cartSchema = new Schema<Cart>(
   {
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    cartId: { type: Schema.Types.ObjectId, ref: "Cart", required: true },
-    shippingAddress: { type: String, required: true },
-    paymentStatus: { type: String, required: true, enum: ["pending", "paid"] },
-    orderStatus: { type: String, required: true, enum: ["pending", "shipped", "delivered"] },
-    totalPrice: { type: Number, required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    items: [
+      {
+        product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+        quantity: { type: Number, required: true, min: 1 },
+      },
+    ],
+    totalPrice: { type: Number, required: true, default: 0, min: 0 },
+    sold: { type: Boolean, required: true, default: false },
   },
   { timestamps: true }
 );
 
-const Order = mongoose.model<Order>("Order", orderSchema);
+// Create the Cart model
+const Cart = mongoose.model<Cart>("Cart", cartSchema);
 
-export default Order;
+export default Cart;
