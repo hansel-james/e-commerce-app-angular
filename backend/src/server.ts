@@ -3,7 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
 
-import serverless from "serverless-http";
 import connectDB from "./config/db";
 import cloudinary from "./config/cloudinary";
 import userRoutes from "./routes/users.routes";
@@ -37,8 +36,8 @@ app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
 
-app.listen(5000, () => {
-  console.log('listening at 5000')
-})
+// app.listen(5000, () => {
+//   console.log('listening at 5000')
+// })
 
 export default app;
