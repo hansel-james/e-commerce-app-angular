@@ -45,7 +45,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   loadProducts(queryParams: { [key: string]: string } = {}): void {
     this.isLoading = true;
-
+    this.limit = Number(this.route.snapshot.queryParamMap.get('limit')) || 10;
+    this.skeletonArray = Array.from({ length: this.limit }, (_, i) => i); // Create array of indexes
+    
     this.productService.getProducts(queryParams).subscribe({
       next: (data) => {
         this.products = data.products;

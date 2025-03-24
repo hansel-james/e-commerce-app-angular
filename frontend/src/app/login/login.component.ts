@@ -1,27 +1,44 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthGuard } from '../auth.guard';
+import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
+  imports: [ReactiveFormsModule]
 })
 export class LoginComponent {
+  isLogin: boolean = true;
+  userForm: FormGroup;
+
   constructor(
-    private authGuard: AuthGuard, 
-    private router: Router, 
-    private route: ActivatedRoute // Ensure ActivatedRoute is properly injected
-  ) {}
+    private authGuard: AuthGuard,
+    private router: Router,
+    private route: ActivatedRoute,
+    private fb: NonNullableFormBuilder // Initialize fb before using it
+  ) {
+    // Initialize userForm inside the constructor
+    this.userForm = this.fb.group({
+      username: new FormControl(''),
+      password: new FormControl(''),
+    });
+  }
 
-  login(): void {
-    this.authGuard.login(); // Simulate login
+  toggleMode(): void {
+    this.isLogin = !this.isLogin;
+  }
 
-    // Ensure route is properly defined before accessing queryParams
-    if (this.route) {
-      const callbackUrl = this.route.snapshot?.queryParams?.['callback'] || '/';
-      this.router.navigateByUrl(callbackUrl); // Redirect to the intended page
+  submit(): void {
+    const { username, password } = this.userForm.value;
+
+    if (this.isLogin) {
+      this.authGuard.login(username, password);
     } else {
-      console.error("ActivatedRoute is undefined");
+      this.authGuard.signUp(username, password);
     }
+
+    const callbackUrl = this.route.snapshot?.queryParams?.['callback'] || '/';
+    this.router.navigateByUrl(callbackUrl);
   }
 }

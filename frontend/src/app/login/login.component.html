@@ -1,3 +1,36 @@
 <div class="p-6 flex justify-center">
-    <button (click)="login()" class="btn btn-secondary text-2xl p-6">Login</button>
+    <div class="bg-base-200 w-96 p-6 border-2 rounded-box shadow-md">
+        <h2 class="text-center text-xl font-semibold mb-4">
+            {{ isLogin ? 'Login' : 'Sign Up' }}
+        </h2>
+
+        <form [formGroup]="userForm" class="flex flex-col gap-4">
+            <!-- Username Input -->
+            <label class="flex flex-col">
+                <span class="text-sm font-medium">Username:</span>
+                <input type="text" formControlName="username" placeholder="Enter your username"
+                    class="input input-ghost w-full mt-1" />
+            </label>
+
+            <!-- Password Input -->
+            <label class="flex flex-col">
+                <span class="text-sm font-medium">Password:</span>
+                <input type="password" formControlName="password" placeholder="Enter your password"
+                    class="input input-ghost w-full mt-1" />
+            </label>
+
+            <!-- Submit Button -->
+            <button (click)="submit()" class="btn btn-secondary text-lg w-full mt-2">
+                {{ isLogin ? 'Login' : 'Sign Up' }}
+            </button>
+
+            <!-- Toggle Link -->
+            <p class="text-center text-sm mt-4">
+                {{ isLogin ? "Don't have an account?" : "Already have an account?" }}
+                <button (click)="toggleMode()" class="text-primary underline">
+                    {{ isLogin ? 'Sign Up' : 'Login' }}
+                </button>
+            </p>
+        </form>
+    </div>
 </div>
