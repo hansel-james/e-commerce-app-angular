@@ -1,6 +1,6 @@
 import express from "express";
 import fileUpload from "express-fileupload";
-import { getProducts, addProduct, getCategories } from "../controllers/product.controller";
+import { getProducts, addProduct, getCategories, getProduct } from "../controllers/product.controller";
 
 const router = express.Router();
 
@@ -10,5 +10,6 @@ router.use(fileUpload());
 router.get("/", getProducts);
 router.post("/", addProduct);
 router.get("/categories", getCategories)
+router.get("/:id", getProduct);
 
 export default router;

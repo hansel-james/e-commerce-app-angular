@@ -1,5 +1,25 @@
-<div class="w-auto flex p-4 justify-center">
-    <p>Showing page {{ currentPage }} of {{ totalPages }} </p>
+<div class="w-auto flex lg:flex-row flex-col p-4 justify-center items-center gap-4">
+
+    <!-- Center Page Info -->
+    <div class="flex justify-center lg:flex-1">
+        <p class="text-center">
+            Showing page {{ currentPage }} of {{ totalPages }}
+        </p>
+    </div>  
+
+    <!-- Sorting Options -->
+    <div class="flex items-center gap-2 lg:ml-auto mr-3">
+        <label class="text-lg font-medium text-base-content">Sort By:</label>
+        
+        <button 
+            class="border p-2 rounded-md bg-base-200 text-base-content focus:ring focus:ring-primary transition-all duration-200 flex items-center gap-2"
+            (click)="toggleSortMenu()"
+        >
+        Select Sort
+        <span [class.rotate-180]="isSortMenuOpen" class="transition-transform duration-300 text-primary">▼</span>
+        </button>
+    </div>
+
 </div>
 
 <div class="flex justify-center not-lg:flex-col not-lg:items-center w-full">

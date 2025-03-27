@@ -76,3 +76,18 @@ export const getCategories = async (req: Request, res: Response): Promise<void> 
       res.status(500).json({ error: "Failed to fetch categories" });
     }
 };
+
+export const getProduct = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findOne({ _id : id });
+    if(!product) {
+      res.status(404).json({ message: "Product Not Found"});
+    } else {
+      res.status(200).json(product);
+    }
+  } catch (error) {
+    console.error("Error in retrieving product with id");
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}

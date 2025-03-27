@@ -1,0 +1,46 @@
+<div class="flex flex-col lg:flex-row items-center gap-8 max-w-6xl mx-auto p-6 bg-base-100 shadow-lg rounded-xl">
+
+    <!-- Product Image -->
+    <div class="w-full lg:w-1/2">
+        <img [src]="product?.imageUrl" alt="{{ product?.name }}" class="rounded-lg shadow-md w-full">
+    </div>
+
+    <!-- Product Details -->
+    <div class="w-full lg:w-1/2 space-y-4">
+        <h1 class="text-3xl font-bold text-base-content">{{ product?.name }}</h1>
+
+        <!-- Category Badges -->
+        <div class="flex flex-wrap gap-2">
+            @for (category of product?.categories; track category) {
+                <span class="badge badge-primary badge-outline text-sm">
+                    {{ category }}
+                </span>
+            }
+        </div>
+
+        <!-- Price -->
+        <div class="text-2xl font-semibold text-primary">
+            ${{ product?.price?.toFixed(2) }}
+        </div>
+
+        <!-- Description -->
+        <p class="text-base-content/80">{{ product?.description }}</p>
+
+        <!-- Add to Cart Button -->
+        <button class="btn btn-primary w-full lg:w-auto">
+            Add to Cart 🛒
+        </button>
+
+        <!-- Product Tabs -->
+        <div class="tabs tabs-boxed mt-6">
+            <a class="tab tab-active">Details</a>
+            <a class="tab">Reviews</a>
+        </div>
+
+        <!-- Placeholder for details and reviews -->
+        <div class="p-4 bg-base-200 rounded-lg shadow-md">
+            <p class="text-sm text-base-content/70">More details and customer reviews will be displayed here.</p>
+        </div>
+    </div>
+
+</div>

@@ -20,6 +20,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
   isLoading = true;
   private queryParamsSubscription!: Subscription;
   skeletonArray: number[] = [];
+  isSortMenuOpen: boolean = false;
+
+  toggleSortMenu(): boolean {
+    return this.isSortMenuOpen = !this.isSortMenuOpen;
+  }
 
   constructor(
     private productService: ProductService,

@@ -18,6 +18,10 @@ export const routes: Routes = [
         loadComponent: () => import('./products/products.component').then(m => m.ProductsComponent) // ✅ Lazy load component
     },
     {
+        path: 'products/:id',
+        loadComponent: () => import('./products/product-page/product-page.component').then(m => m.ProductPageComponent) // ✅ Lazy load component
+    },
+    {
         path: 'cart',
         component: CartComponent,
         canActivate: [AuthGuard],
