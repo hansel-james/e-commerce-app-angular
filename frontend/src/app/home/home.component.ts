@@ -194,16 +194,19 @@ export class HomeComponent implements AfterViewInit, AfterViewChecked, OnDestroy
     const touchBoxElement = this.touchBox.nativeElement;
 
     const touchStartListener = this.renderer.listen(touchBoxElement, 'touchstart', () => {
-      this.renderer.addClass(touchBoxElement, 'border-primary');
+      this.renderer.removeClass(touchBoxElement, 'border-primary/40');
+      this.renderer.addClass(touchBoxElement, 'border-primary/100');
     });
 
     const touchMoveListener = this.renderer.listen(touchBoxElement, 'touchmove', () => {
-      this.renderer.addClass(touchBoxElement, 'border-primary');
+      this.renderer.removeClass(touchBoxElement, 'border-primary/40');
+      this.renderer.addClass(touchBoxElement, 'border-primary/100');
     });
 
     const touchEndListener = this.renderer.listen(touchBoxElement, 'touchend', () => {
       setTimeout(() => {
-        this.renderer.removeClass(touchBoxElement, 'border-primary');
+        this.renderer.removeClass(touchBoxElement, 'border-primary/100');
+        this.renderer.addClass(touchBoxElement, 'border-primary/40');
       }, 200);
     });
 
