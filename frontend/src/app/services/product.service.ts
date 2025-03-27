@@ -31,7 +31,6 @@ export class ProductService {
   getProduct(productId: string | null): Observable<Product> {
     return this.http.get<Product>(`${this.apiUrl}/${productId}`).pipe(
       map(response => {
-        console.log('product : ', response);
         return response; // ✅ Ensure the response is returned
       })
     );

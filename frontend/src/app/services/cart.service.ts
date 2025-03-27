@@ -25,7 +25,7 @@ interface Cart {
   providedIn: 'root',
 })
 export class CartService {
-  private apiUrl = 'https://e-com-app-backend-five.vercel.app/api/carts';
+  private apiUrl = 'http://localhost:5000/api/carts';
 
   constructor(private http: HttpClient, private authGuard: AuthGuard) {}
 
@@ -37,6 +37,7 @@ export class CartService {
   // Add an item to the cart
   addToCart(item: CartItem): Observable<Cart> {
     const userId = this.authGuard['userId'];
+    // console.log('trying to add ', item, ' to ', userId);
     return this.http.post<Cart>(`${this.apiUrl}/add`, {
       userId,
       cartItems: [item],

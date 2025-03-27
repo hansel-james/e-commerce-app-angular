@@ -8,26 +8,33 @@
                 style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
                 @for (item of cart.items; track item.product._id) {
                     <div class="card w-full bg-base-100 shadow-xl hover:shadow-primary not-lg:shadow-primary transition-all duration-300 hover:scale-105">
-                        <div class="card-body">
-                            <h2 class="card-title font-bold">{{ item.product.name }}</h2>
-                            <p>Price: ${{ item.product.price }}</p>
-                            <p>Quantity: {{ item.quantity }}</p>
-                            <p>Sub-Total: {{ item.product.price * item.quantity }}</p>
-                            <div class="card-actions justify-end">
-                                <button 
-                                    class="btn btn-error text-white transition-all duration-300 hover:scale-110"
-                                    (click)="removeFromCart(item.product._id)">
-                                    Remove
-                                </button>
+                        <div class="card-body flex items-center gap-4">
+                            <!-- Product Image (Left) -->
+                            <img src="{{ item.product.imageUrl }}" alt="{{ item.product.name }}" 
+                                 class="w-16 h-16 object-cover rounded-lg shadow-md" />
+                        
+                            <!-- Product Details (Right) -->
+                            <div>
+                                <h2 class="card-title font-bold">{{ item.product.name }}</h2>
+                                <p>Price: ${{ item.product.price }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                                <p>Sub-Total: ${{ (item.product.price * item.quantity).toFixed(2) }}</p>
+                                <div class="card-actions justify-end">
+                                    <button 
+                                        class="btn btn-error text-white transition-all duration-300 hover:scale-110"
+                                        (click)="removeFromCart(item.product._id)">
+                                        Remove
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        </div>                        
                     </div>
                 }
             </div>
 
             <div class="flex justify-center mt-8">
                 <div class="inline-block">
-                    <p>Total : ${{ cart.totalPrice }}</p>
+                    <p>Total : ${{ (cart.totalPrice).toFixed(2) }}</p>
                     <button 
                         class="btn btn-success btn-lg transition-all duration-300 hover:scale-110"
                         (click)="buyCart()">

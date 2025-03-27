@@ -27,9 +27,32 @@
         <p class="text-base-content/80">{{ product?.description }}</p>
 
         <!-- Add to Cart Button -->
-        <button class="btn btn-primary w-full lg:w-auto" (click)="handleAddToCart()">
+        <button class="btn btn-primary w-full lg:w-auto" (click)="handleShowModal()">
             Add to Cart 🛒
         </button>
+
+        
+        <!-- Open the modal using ID.showModal() method -->
+        <dialog #my_modal class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <h3 class="text-lg font-bold">Add {{ product?.name }}</h3>
+            <div class="flex gap-2">
+                <p class="py-4">Quantity: </p>
+                <button class="mt-4 btn btn-xs btn-primary" (click)="addQuantity()">+</button>
+                <p class="py-4">{{ quantity }}</p>
+                <button class="mt-4 btn btn-xs btn-primary" (click)="removeQuantity()">-</button>
+                
+            </div>
+            <p class="py-4">Price: {{ (quantity * (product?.price ?? 0)).toFixed(2) }}</p>
+            <div class="modal-action">
+                <button class="btn btn-primary" (click)="handleAddToCart()">Add</button>
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn">Close</button>
+                </form>
+            </div>
+        </div>
+        </dialog>
 
         <!-- Product Tabs -->
         <div class="tabs tabs-boxed mt-6">

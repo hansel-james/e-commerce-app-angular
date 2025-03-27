@@ -39,6 +39,6 @@ export class LoginComponent {
     }
 
     const callbackUrl = this.route.snapshot?.queryParams?.['callback'] || '/';
-    this.router.navigateByUrl(callbackUrl);
+    // console.log('callbackUrl from submit : ', callbackUrl);
   }
 }

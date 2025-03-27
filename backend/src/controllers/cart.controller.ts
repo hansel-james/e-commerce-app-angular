@@ -8,8 +8,6 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
     try {
         const { userId } = req.params;
 
-        console.log('trying to get for : ', userId);
-
         const cart = await Cart.findOne({ userId, sold: false })
             .populate({
                 path: "items.product",
@@ -21,8 +19,6 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
             res.status(200).json({ userId, items: [], totalPrice: 0 });
             return;
         }
-
-        console.log('cart is : ', cart);
 
         res.status(200).json(cart);
     } catch (error) {
@@ -58,8 +54,10 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
     try {
         const { userId, cartItems, totalPrice } = req.body;
 
-        let cart = await Cart.findOne({ userId, sold: false });
+        // console.log('cartItems : ', cartItems);
 
+        let cart = await Cart.findOne({ userId, sold: false });
+        // console.log('cart is : ', cart);
         if (!cart) {
             cart = new Cart({
                 userId,
@@ -78,8 +76,14 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
             });
 
             // Merge new items
-            cartItems.forEach((newItem: { product: string; quantity: number }) => {
-                const productId = new mongoose.Schema.Types.ObjectId(newItem.product);
+            cartItems.forEach((newItem: 
+                {
+                    product: {
+                        _id: mongoose.Schema.Types.ObjectId
+                    }; 
+                    quantity: number 
+                }) => {
+                const productId = newItem.product._id;
                 const newQuantity = Number(newItem.quantity) || 0;
 
                 if (updatedItemsMap.has(productId.toString())) {
@@ -123,8 +127,13 @@ export const removeFromCart = async (req: Request, res: Response): Promise<void>
             res.status(404).json({ message: "Cart not found" });
             return;
         }
-
+        let quantity = 0;
         // Remove the specified product
+        cart.items.forEach((item) => {
+            if(item.product.toString() === productId) {
+                quantity = item.quantity;
+            }
+        })
         const updatedItems = cart.items.filter(item => item.product.toString() !== productId);
 
         // If the item wasn't in the cart
@@ -135,20 +144,24 @@ export const removeFromCart = async (req: Request, res: Response): Promise<void>
 
         cart.items = updatedItems;
 
+        // console.log('quantity to remove is : ', quantity);
+
         // Recalculate total price
         const product = await Product.findById(productId);
         if (product) {
-            cart.totalPrice = cart.items.reduce(
-                (total, item) => total + item.quantity * product.price,
-                0
-            );
+            cart.totalPrice = cart.totalPrice - (product.price * quantity);
         }
         cart.totalPrice = Math.max(0, cart.totalPrice); // Ensure non-negative total
 
         // If the cart is empty, delete it
         if (cart.items.length === 0) {
             await Cart.deleteOne({ userId });
-            res.status(200).json([]);
+            res.status(200).json({
+                userId,
+                items: [],
+                totalPrice: 0,
+                sold: false,
+            });
             return;
         }
 
