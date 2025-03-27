@@ -1,23 +1,25 @@
 import { Injectable, Inject, PLATFORM_ID } from "@angular/core";
-import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
-import { HttpClient } from "@angular/common/http";
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { isPlatformBrowser } from "@angular/common";
 import { jwtDecode } from "jwt-decode";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard {
   private isLoggedIn: boolean = false;
   private userId: string | null = null;
   private apiUrl = "https://e-com-app-backend-five.vercel.app/api/users";
 
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private route: ActivatedRoute,
-    @Inject(PLATFORM_ID) private platformId: object // Inject platform ID
-  ) {
+  private userSubject = new BehaviorSubject<{ 
+    _id: string, username: string, createdAt: string, updatedAt: string 
+  } | null>(null);
+  
+  user$ = this.userSubject.asObservable(); // Expose observable for components
+
+  constructor(private router: Router, private http: HttpClient, private route: ActivatedRoute, @Inject(PLATFORM_ID) private platformId: object) {
     this.loadUserData();
   }
 
@@ -35,9 +37,38 @@ export class AuthGuard implements CanActivate {
     try {
       const decoded: any = jwtDecode(token);
       this.userId = decoded.id || null;
+      if (this.userId) {
+        this.fetchUserData();
+      }
     } catch (error) {
       console.error("Invalid token:", error);
       this.userId = null;
+    }
+  }
+
+  private fetchUserData(): void {
+    if (this.userId) {
+      const token = isPlatformBrowser(this.platformId) ? localStorage.getItem("token") : null;
+
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+
+      const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+      this.http.get<{ _id: string, username: string, createdAt: string, updatedAt: string }>(
+        `${this.apiUrl}/${this.userId}`,
+        { headers }
+      ).subscribe({
+        next: (data) => {
+          this.userSubject.next(data); // Update BehaviorSubject
+        },
+        error: (error) => {
+          console.error("Failed to fetch user data:", error);
+          this.userSubject.next(null);
+        },
+      });
     }
   }
 
@@ -62,8 +93,7 @@ export class AuthGuard implements CanActivate {
         }
         this.isLoggedIn = true;
         this.extractUserId(response.token);
-
-        // Get callback URL or default to home
+        this.fetchUserData();
         const callbackUrl = this.route.snapshot.queryParams["callback"] || "/";
         this.router.navigateByUrl(callbackUrl);
       },
@@ -82,8 +112,7 @@ export class AuthGuard implements CanActivate {
         }
         this.isLoggedIn = true;
         this.extractUserId(response.token);
-
-        // After successful signup, redirect to callback URL
+        this.fetchUserData();
         const callbackUrl = this.route.snapshot.queryParams["callback"] || "/";
         this.router.navigateByUrl(callbackUrl);
       },
@@ -99,6 +128,7 @@ export class AuthGuard implements CanActivate {
     }
     this.isLoggedIn = false;
     this.userId = null;
+    this.userSubject.next(null);
     this.router.navigateByUrl("/login");
   }
 }

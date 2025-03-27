@@ -1,4 +1,27 @@
 <div>
+    <div class="justify-center flex">
+        <h1 class="text-3xl font-bold text-center mb-6">Your Profile</h1>
+    </div>
+    <div class="w-full flex justify-center items-start">
+        <div class="w-3/4 p-4 pb-8 rounded-4xl m-4 flex flex-col items-start gap-4 bg-base-300 
+            border-1 hover:border-primary active:border-primary transition-all duration-500">
+            <ul class="list bg-base-100 rounded-box shadow-md w-full p-4">
+                
+                <li class="list-row hover:text-primary hover:shadow-md hover:shadow-secondary
+                active:text-primary active:shadow-md active:shadow-secondary
+                transition-all duration-500">
+                    <strong>Username:</strong> {{ user?.username }}
+                </li>
+                
+                <li class="list-row hover:text-primary hover:shadow-md hover:shadow-secondary
+                active:text-primary active:shadow-md active:shadow-secondary
+                transition-all duration-500">
+                    <strong>Date Joined:</strong> {{ user?.createdAt | date:'medium' }}
+                </li>
+    
+            </ul>
+        </div>
+    </div>    
     <app-themes />
     <div class="flex justify-center">
         <button (click)="logout()" class="btn btn-neutral">Log out</button>

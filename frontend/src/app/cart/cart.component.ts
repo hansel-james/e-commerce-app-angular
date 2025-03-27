@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { AuthGuard } from '../auth.guard';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 interface CartItem {
   product: {
@@ -24,11 +24,13 @@ interface Cart {
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.css']
+  styleUrls: ['./cart.component.css'],
+  imports: [RouterLink]
 })
 export class CartComponent implements OnInit {
   cart: Cart | null = null;
   userId: string | null = null; // Example userId, should be dynamically retrieved
+  isLoading: boolean = true;
 
   constructor(private cartService: CartService, private authGuard: AuthGuard, private router: Router) {}
 
@@ -41,7 +43,8 @@ export class CartComponent implements OnInit {
     this.cartService.getCart().subscribe({
       next: (cart) => {
         this.cart = cart
-        console.log('cart is : ', cart);
+        // console.log('cart is : ', cart);
+        this.isLoading = false;
       },
       error: (error) => console.error('Error loading cart:', error),
     });
