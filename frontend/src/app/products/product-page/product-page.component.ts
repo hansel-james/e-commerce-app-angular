@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product.service';
+import { AuthGuard } from '../../auth.guard';
 
 interface Product {
   _id: string,
@@ -25,7 +26,9 @@ export class ProductPageComponent implements OnInit {
 
   product: Product | null = null;
 
-  constructor(private route: ActivatedRoute, private productService: ProductService) {}
+  constructor(private route: ActivatedRoute, 
+    private productService: ProductService, 
+    private authGuard: AuthGuard ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -35,4 +38,9 @@ export class ProductPageComponent implements OnInit {
       });    
     });
   }
+  
+  handleAddToCart(): void {
+    
+  }
+
 }

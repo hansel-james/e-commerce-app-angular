@@ -43,7 +43,8 @@ export class AppComponent {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
-      this.isProductsPage.set(event.url.startsWith('/products')); // ✅ Checks for /products and any subpage
-    });    
+      // ✅ Matches `/products/anything` but NOT `/products`
+      this.isProductsPage.set(/^\/products(?:\?.*)?$/.test(event.url));
+    });
   }
 }
