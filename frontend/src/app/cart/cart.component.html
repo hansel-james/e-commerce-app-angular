@@ -12,6 +12,7 @@
                             <h2 class="card-title font-bold">{{ item.product.name }}</h2>
                             <p>Price: ${{ item.product.price }}</p>
                             <p>Quantity: {{ item.quantity }}</p>
+                            <p>Sub-Total: {{ item.product.price * item.quantity }}</p>
                             <div class="card-actions justify-end">
                                 <button 
                                     class="btn btn-error text-white transition-all duration-300 hover:scale-110"
@@ -25,11 +26,14 @@
             </div>
 
             <div class="flex justify-center mt-8">
-                <button 
-                    class="btn btn-success btn-lg transition-all duration-300 hover:scale-110"
-                    (click)="buyCart()">
-                    Checkout (${{ cart.totalPrice }})
-                </button>
+                <div class="inline-block">
+                    <p>Total : ${{ cart.totalPrice }}</p>
+                    <button 
+                        class="btn btn-success btn-lg transition-all duration-300 hover:scale-110"
+                        (click)="buyCart()">
+                        Checkout 
+                    </button>
+                </div>  
             </div>
         } @else {
             <div class="text-center">
