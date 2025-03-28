@@ -1,19 +1,35 @@
 <div class="container mx-auto p-4">
     <h1 class="text-3xl font-bold text-center mb-6">🛒 Your Cart</h1>
+
     @if(isLoading) {
-        <h1 class="text-3xl font-bold text-center mb-6">Loading cart...</h1>
+        <!-- Skeleton Loader -->
+        <div class="grid gap-6 justify-center"
+             style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+            @for (i of [1,2,3,4]; track i) {
+                <div class="card w-auto bg-base-100 shadow-xl animate-pulse">
+                    <div class="card-body flex items-center gap-4">
+                        <div class="skeleton w-16 h-16 rounded-lg"></div>
+                        <div class="flex-1 space-y-2">
+                            <div class="skeleton h-4 w-3/4 rounded"></div>
+                            <div class="skeleton h-3 w-1/2 rounded"></div>
+                            <div class="skeleton h-3 w-2/3 rounded"></div>
+                            <div class="skeleton h-8 w-1/4 rounded mt-2"></div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     } @else {
         @if (cart && cart.items.length > 0) {
+            <!-- Cart Items -->
             <div class="grid gap-6 justify-center"
                 style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
                 @for (item of cart.items; track item.product._id) {
-                    <div class="card w-full bg-base-100 shadow-xl hover:shadow-primary/40 not-lg:shadow-primary/40 not-lg:active:shadow-primary/55 transition-all duration-300 hover:scale-105">
+                    <div class="card w-auto bg-base-100 shadow-xl hover:shadow-primary/40 not-lg:shadow-primary/40 not-lg:active:shadow-primary/55 transition-all duration-300 hover:scale-105">
                         <div class="card-body flex items-center gap-4">
-                            <!-- Product Image (Left) -->
                             <img src="{{ item.product.imageUrl }}" alt="{{ item.product.name }}" 
                                  class="w-16 h-16 object-cover rounded-lg shadow-md" />
-                        
-                            <!-- Product Details (Right) -->
+
                             <div>
                                 <h2 class="card-title font-bold">{{ item.product.name }}</h2>
                                 <p>Price: ${{ item.product.price }}</p>
@@ -32,6 +48,7 @@
                 }
             </div>
 
+            <!-- Cart Footer -->
             <div class="flex justify-center mt-8">
                 <div class="inline-block">
                     <p>Total : ${{ (cart.totalPrice).toFixed(2) }}</p>
@@ -43,6 +60,7 @@
                 </div>  
             </div>
         } @else {
+            <!-- Empty State -->
             <div class="text-center">
                 <h2 class="text-xl font-semibold text-gray-600">Your cart is empty 🛍️</h2>
                 <p class="text-gray-500">Start adding some products to your cart.</p>
