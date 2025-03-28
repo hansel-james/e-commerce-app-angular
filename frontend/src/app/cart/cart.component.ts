@@ -51,7 +51,10 @@ export class CartComponent implements OnInit {
         this.isLoading = false;
         this.totalLoading = false;
       },
-      error: (error) => console.error('Error loading cart:', error),
+      error: (error) => {
+        console.error('Error loading cart:', error);
+        this.authGuard.logout();
+      }
     });
   }
 
@@ -69,7 +72,10 @@ export class CartComponent implements OnInit {
         this.productLoadMap.delete(productId);
         this.checkIfAllProductsLoaded();
       },
-      error: (error) => console.error('Error removing item:', error),
+      error: (error) => {
+        console.error('Error loading cart:', error);
+        this.authGuard.logout();
+      }
     });
   }
 
@@ -86,7 +92,10 @@ export class CartComponent implements OnInit {
         this.checkIfAllProductsLoaded();
         this.cart = updatedCart
       },
-      error: (error) => console.error('Error adding item:', error),
+      error: (error) => {
+        console.error('Error loading cart:', error);
+        this.authGuard.logout();
+      }
     })
   }
 
@@ -104,7 +113,10 @@ export class CartComponent implements OnInit {
         this.checkIfAllProductsLoaded();
         this.cart = updatedCart
       },
-      error: (error) => console.error('Error removing single item:', error),
+      error: (error) => {
+        console.error('Error loading cart:', error);
+        this.authGuard.logout();
+      }
     })
   }
 

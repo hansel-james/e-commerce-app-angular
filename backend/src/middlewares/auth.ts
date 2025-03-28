@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 // Extend Express Request to include `user`
 interface AuthenticatedRequest extends Request {
     user?: any; // Use a proper type for user (e.g., `Record<string, any>` or a User interface)
-  }
+}
   
 
 export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {

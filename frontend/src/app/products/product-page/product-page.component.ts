@@ -83,7 +83,10 @@ export class ProductPageComponent implements OnInit, AfterViewInit {
           this.showSkeleton = false;
           this.quantity = 1;
         },
-        error: (error) => console.error('error adding : ', error)
+        error: (error) => {
+          console.error('Error adding:', error);
+          this.authGuard.logout();
+        }
       });
       // console.log('added to cart successfully');
     }

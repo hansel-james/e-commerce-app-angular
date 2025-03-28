@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthGuard } from '../auth.guard';
+import { isPlatformBrowser } from '@angular/common';
 
 interface CartItem {
   product: {
@@ -27,11 +28,21 @@ interface Cart {
 export class CartService {
   private apiUrl = 'https://e-com-app-backend-five.vercel.app/api/carts';
 
-  constructor(private http: HttpClient, private authGuard: AuthGuard) {}
+  constructor(private http: HttpClient, private authGuard: AuthGuard, @Inject(PLATFORM_ID) private platformId: object) {}
+
+  private getHeaders() {
+    let token: string | null = "";
+    if(isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token');  
+    } 
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
 
   // Fetch the user's cart
   getCart(): Observable<Cart> {
-    return this.http.get<Cart>(`${this.apiUrl}/${this.authGuard['userId']}`);
+    return this.http.get<Cart>(`${this.apiUrl}/${this.authGuard['userId']}`, { headers: this.getHeaders() });
   }
 
   // Add an item to the cart
@@ -42,17 +53,17 @@ export class CartService {
       userId,
       cartItems: [item],
       totalPrice: item.product.price * item.quantity,
-    });
+    }, { headers: this.getHeaders() });
   }
 
   // Remove an item from the cart
   removeFromCart(productId: string): Observable<Cart> {
     const userId = this.authGuard['userId']
-    return this.http.post<Cart>(`${this.apiUrl}/remove`, { userId, productId });
+    return this.http.post<Cart>(`${this.apiUrl}/remove`, { userId, productId }, { headers: this.getHeaders() });
   }
 
   // Purchase the cart
   buyCart(): Observable<Cart> {
-    return this.http.post<Cart>(`${this.apiUrl}/${this.authGuard['userId']}/buy`, {});
+    return this.http.post<Cart>(`${this.apiUrl}/${this.authGuard['userId']}/buy`, { headers: this.getHeaders() });
   }
 }

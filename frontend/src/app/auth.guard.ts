@@ -43,6 +43,7 @@ export class AuthGuard {
     } catch (error) {
       console.error("Invalid token:", error);
       this.userId = null;
+      this.logout();
     }
   }
 
@@ -67,6 +68,7 @@ export class AuthGuard {
         error: (error) => {
           console.error("Failed to fetch user data:", error);
           this.userSubject.next(null);
+          this.logout();
         },
       });
     }
@@ -99,6 +101,7 @@ export class AuthGuard {
       },
       error: (error) => {
         console.error("Login failed:", error);
+        this.logout();
       },
     });
   }
@@ -118,6 +121,7 @@ export class AuthGuard {
       },
       error: (error) => {
         console.error("Signup failed:", error);
+        this.logout();
       },
     });
   }

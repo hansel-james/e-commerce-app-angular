@@ -26,6 +26,6 @@ const orderSchema: Schema = new Schema(
 );
 
 // Create the Order model
-const Order = mongoose.models.Order || mongoose.model<Order>("Order", orderSchema);
+const Order = mongoose.model<Order>("Order", orderSchema);
 
 export default Order;
