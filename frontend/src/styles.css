@@ -3,7 +3,7 @@
 
 @plugin "daisyui" {
     themes: all;
-    include: input, color, button, card, radio, badge, text, list, carousel, option, select, skeleton, tab, modal, checkbox;
+    include: input, color, button, card, radio, badge, text, list, carousel, option, select, skeleton, tab, modal, checkbox, table;
 }
 
 @theme {

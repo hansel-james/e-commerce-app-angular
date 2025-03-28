@@ -16,7 +16,7 @@ interface CartItem {
   quantity: number;
 }
 
-interface Cart {
+export interface Cart {
   userId: string;
   items: CartItem[];
   totalPrice: number;

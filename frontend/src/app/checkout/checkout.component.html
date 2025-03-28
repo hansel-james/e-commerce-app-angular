@@ -1,0 +1,53 @@
+<div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold text-center mb-6">Checkout</h1>
+    <h1 class="text-2xl mx-16 shadow-2xs">Order Summary</h1>
+
+    @if (cart !== null) {
+        <div class="overflow-x-auto">
+            <table class="table">
+                <!-- head -->
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Sub-Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (item of cart.items; track item.product._id) {
+                        <tr>
+                            <td>
+                                <div class="flex items-center gap-3">
+                                    <div class="avatar">
+                                        <div class="mask mask-squircle h-12 w-12">
+                                            <img [src]="item.product.imageUrl" alt="{{ item.product.name }}" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold">{{ item.product.name }}</div>
+                                        <div class="text-sm opacity-50">{{ item.product.categories.join(', ') }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ item.product.price | currency }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.product.price * item.quantity | currency }}</td>
+                        </tr>
+                    }
+                </tbody>
+                <!-- foot -->
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th class="text-right font-bold">Total:</th>
+                        <th class="font-bold">{{ cart.totalPrice | currency }}</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    } @else {
+        <div class="text-center text-gray-500">Loading cart...</div>
+    }
+</div>
