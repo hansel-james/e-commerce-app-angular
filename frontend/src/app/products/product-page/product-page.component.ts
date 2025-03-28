@@ -24,7 +24,7 @@ export class ProductPageComponent implements OnInit, AfterViewInit {
 
   productId: string | null = null;
   product: Product | null = null;
-  quantity: number = 0;
+  quantity: number = 1;
   showSkeleton: boolean = false;
   @ViewChild('my_modal') my_modal!: ElementRef<HTMLDialogElement>;
 
@@ -81,6 +81,7 @@ export class ProductPageComponent implements OnInit, AfterViewInit {
         next: () => {
           this.my_modal.nativeElement.close();
           this.showSkeleton = false;
+          this.quantity = 1;
         },
         error: (error) => console.error('error adding : ', error)
       });

@@ -33,6 +33,8 @@ export class CartComponent implements OnInit {
   cart: Cart | null = null;
   userId: string | null = null; // Example userId, should be dynamically retrieved
   isLoading: boolean = true;
+  totalLoading: boolean = true;
+  productLoadMap: Map<String, Boolean> = new Map<String, Boolean>();
 
   constructor(private cartService: CartService, private authGuard: AuthGuard, private router: Router) {}
 
@@ -47,36 +49,57 @@ export class CartComponent implements OnInit {
         this.cart = cart
         // console.log('cart is : ', cart);
         this.isLoading = false;
+        this.totalLoading = false;
       },
       error: (error) => console.error('Error loading cart:', error),
     });
   }
 
+  checkIfAllProductsLoaded() {
+    const allLoaded = Array.from(this.productLoadMap.values()).every(loading => !loading);
+    this.totalLoading = !allLoaded;
+  }  
+
   removeFromCart(productId: string): void {
     this.cartService.removeFromCart(productId).subscribe({
-      next: (updatedCart) => (this.cart = updatedCart),
+      next: (updatedCart) => {
+        this.cart = updatedCart
+      },
       error: (error) => console.error('Error removing item:', error),
     });
   }
 
   addItem(product: Product): void {
+    this.productLoadMap.set(product._id, true);
+    this.totalLoading = true;
     let quantity: number = 1;
     this.cartService.addToCart({
       product,
       quantity
     }).subscribe({
-      next: (updatedCart) => (this.cart = updatedCart),
+      next: (updatedCart) => {
+        this.productLoadMap.set(product._id, false);
+        this.checkIfAllProductsLoaded();
+        this.cart = updatedCart
+      },
       error: (error) => console.error('Error adding item:', error),
     })
   }
 
   removeItem(product: Product) : void {
+    this.productLoadMap.set(product._id, true);
+    this.totalLoading = true;
     let quantity: number = -1;
     this.cartService.addToCart({
       product,
       quantity
     }).subscribe({
-      next: (updatedCart) => (this.cart = updatedCart),
+      next: (updatedCart) => {
+        if(this.cart?.items.length !== updatedCart.items.length) this.productLoadMap.delete(product._id);
+        else this.productLoadMap.set(product._id, false);
+        this.checkIfAllProductsLoaded();
+        this.cart = updatedCart
+      },
       error: (error) => console.error('Error removing single item:', error),
     })
   }
