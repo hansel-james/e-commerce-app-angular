@@ -221,19 +221,22 @@ export class HomeComponent implements AfterViewInit, AfterViewChecked, OnDestroy
     const carouselElement = this.carousel.nativeElement;
 
     const touchStartListener = this.renderer.listen(carouselElement, 'touchstart', () => {
+      this.renderer.removeClass(carouselElement, 'shadow-sm');
       this.renderer.addClass(carouselElement, 'shadow-lg');
-      this.renderer.addClass(carouselElement, 'shadow-secondary');
+      this.renderer.addClass(carouselElement, 'shadow-secondary/30');
     });
 
-    const touchMoveListener = this.renderer.listen(carouselElement, 'touchmove', (event: TouchEvent) => {
-      this.renderer.addClass(carouselElement, 'shadow-xl');
-      this.renderer.addClass(carouselElement, 'shadow-secondary');
+    const touchMoveListener = this.renderer.listen(carouselElement, 'touchmove', () => {
+      this.renderer.removeClass(carouselElement, 'shadow-sm');
+      this.renderer.addClass(carouselElement, 'shadow-lg');
+      this.renderer.addClass(carouselElement, 'shadow-secondary/30');
     });
 
     const touchEndListener = this.renderer.listen(carouselElement, 'touchend', () => {
       setTimeout(() => {
-        this.renderer.removeClass(carouselElement, 'shadow-xl');
-        this.renderer.removeClass(carouselElement, 'shadow-secondary');
+        this.renderer.removeClass(carouselElement, 'shadow-lg');
+        this.renderer.removeClass(carouselElement, 'shadow-secondary/30');
+        this.renderer.addClass(carouselElement, 'shadow-sm');
       }, 200);
     });
 

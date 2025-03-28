@@ -7,7 +7,7 @@
             <div class="grid gap-6 justify-center"
                 style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
                 @for (item of cart.items; track item.product._id) {
-                    <div class="card w-full bg-base-100 shadow-xl hover:shadow-primary not-lg:shadow-primary transition-all duration-300 hover:scale-105">
+                    <div class="card w-full bg-base-100 shadow-xl hover:shadow-primary/40 not-lg:shadow-primary/40 not-lg:active:shadow-primary/55 transition-all duration-300 hover:scale-105">
                         <div class="card-body flex items-center gap-4">
                             <!-- Product Image (Left) -->
                             <img src="{{ item.product.imageUrl }}" alt="{{ item.product.name }}" 
