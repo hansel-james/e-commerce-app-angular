@@ -61,9 +61,13 @@ export class CartComponent implements OnInit {
   }  
 
   removeFromCart(productId: string): void {
+    this.productLoadMap.set(productId, true);
+    this.totalLoading = true;
     this.cartService.removeFromCart(productId).subscribe({
       next: (updatedCart) => {
         this.cart = updatedCart
+        this.productLoadMap.delete(productId);
+        this.checkIfAllProductsLoaded();
       },
       error: (error) => console.error('Error removing item:', error),
     });
