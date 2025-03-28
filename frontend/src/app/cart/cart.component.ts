@@ -3,15 +3,17 @@ import { CartService } from '../services/cart.service';
 import { AuthGuard } from '../auth.guard';
 import { Router, RouterLink } from '@angular/router';
 
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  description: string;
+  categories: string[];
+  imageUrl: string;
+}
+
 interface CartItem {
-  product: {
-    categories: string[],
-    description: string,
-    imageUrl: string,
-    name: string,
-    price: number,
-    _id: string,
-  }
+  product: Product
   quantity: number;
 }
 
@@ -55,6 +57,28 @@ export class CartComponent implements OnInit {
       next: (updatedCart) => (this.cart = updatedCart),
       error: (error) => console.error('Error removing item:', error),
     });
+  }
+
+  addItem(product: Product): void {
+    let quantity: number = 1;
+    this.cartService.addToCart({
+      product,
+      quantity
+    }).subscribe({
+      next: (updatedCart) => (this.cart = updatedCart),
+      error: (error) => console.error('Error adding item:', error),
+    })
+  }
+
+  removeItem(product: Product) : void {
+    let quantity: number = -1;
+    this.cartService.addToCart({
+      product,
+      quantity
+    }).subscribe({
+      next: (updatedCart) => (this.cart = updatedCart),
+      error: (error) => console.error('Error removing single item:', error),
+    })
   }
 
   buyCart(): void {

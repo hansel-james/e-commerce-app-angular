@@ -17,11 +17,10 @@
   <!-- Checkboxes inside dropdown -->
   <div *ngIf="showCategoryDropdown" class="mt-2 border border-t-0 rounded-md shadow-lg bg-base-100 p-2">
     <div *ngFor="let cat of categories" class="flex items-center space-x-2 mt-2">
-      <input
-        type="checkbox"
-        [checked]="selectedCategories.includes(cat)"
-        (change)="onCategoryChange(cat, $event)"
-        class="rounded text-primary focus:ring focus:ring-primary transition-all duration-200"
+      <input type="checkbox" 
+      [checked]="selectedCategories.includes(cat)"
+      (change)="onCategoryChange(cat, $event)"
+      class="checkbox checkbox-sm" 
       />
       <span class="text-base-content">{{ cat }}</span>
     </div>

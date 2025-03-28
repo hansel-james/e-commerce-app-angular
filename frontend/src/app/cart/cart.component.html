@@ -33,9 +33,18 @@
                             <div>
                                 <h2 class="card-title font-bold">{{ item.product.name }}</h2>
                                 <p>Price: ${{ item.product.price }}</p>
-                                <p>Quantity: {{ item.quantity }}</p>
+                                <div>
+                                    Quantity:
+                                    <button class="btn btn-primary btn-xs"
+                                        (click)="removeItem(item.product)"    
+                                    >-</button>
+                                    {{ item.quantity }}
+                                    <button class="btn btn-primary btn-xs"
+                                        (click)="addItem(item.product)"
+                                    >+</button>
+                                </div>
                                 <p>Sub-Total: ${{ (item.product.price * item.quantity).toFixed(2) }}</p>
-                                <div class="card-actions justify-end">
+                                <div class="card-actions justify-center">
                                     <button 
                                         class="btn btn-error text-white transition-all duration-300 hover:scale-110"
                                         (click)="removeFromCart(item.product._id)">

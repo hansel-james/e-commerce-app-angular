@@ -10,13 +10,23 @@
                 <li class="list-row hover:text-primary hover:shadow-md hover:shadow-secondary
                 active:text-primary active:shadow-md active:shadow-secondary
                 transition-all duration-500">
-                    <strong>Username:</strong> {{ user?.username }}
+                    <strong>Username:</strong> 
+                    @if(user === null) {
+                        <div class="skeleton w-[95px]"></div>
+                    } @else {
+                        {{ user.username}}
+                    }
                 </li>
                 
                 <li class="list-row hover:text-primary hover:shadow-md hover:shadow-secondary
                 active:text-primary active:shadow-md active:shadow-secondary
                 transition-all duration-500">
-                    <strong>Date Joined:</strong> {{ user?.createdAt | date:'medium' }}
+                    <strong>Date Joined:</strong> 
+                    @if(user === null) {
+                        <div class="skeleton w-[70px]"></div>
+                    } @else {
+                        {{ user.createdAt | date:'medium' }}
+                    }
                 </li>
     
             </ul>
@@ -24,6 +34,6 @@
     </div>    
     <app-themes />
     <div class="flex justify-center">
-        <button (click)="logout()" class="btn btn-neutral">Log out</button>
+        <button (click)="logout()" class="btn btn-neutral mb-6">Log out</button>
     </div>
 </div>

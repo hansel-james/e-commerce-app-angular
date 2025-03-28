@@ -25,7 +25,7 @@ export class ProductPageComponent implements OnInit, AfterViewInit {
   productId: string | null = null;
   product: Product | null = null;
   quantity: number = 0;
-
+  showSkeleton: boolean = false;
   @ViewChild('my_modal') my_modal!: ElementRef<HTMLDialogElement>;
 
   constructor(
@@ -73,10 +73,17 @@ export class ProductPageComponent implements OnInit, AfterViewInit {
   handleAddToCart(): void {
     // console.log('this.product : ', this.product);
     if(this.product !== null) {
+      this.showSkeleton = true;
       this.cartService.addToCart({
         product: this.product,
         quantity: this.quantity,
-      }).subscribe();
+      }).subscribe({
+        next: () => {
+          this.my_modal.nativeElement.close();
+          this.showSkeleton = false;
+        },
+        error: (error) => console.error('error adding : ', error)
+      });
       // console.log('added to cart successfully');
     }
   }
