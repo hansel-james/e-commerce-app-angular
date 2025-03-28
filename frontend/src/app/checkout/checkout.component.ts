@@ -13,6 +13,7 @@ import { CurrencyPipe } from '@angular/common';
 export class CheckoutComponent {
 
   cart: Cart | null = null;
+  payNow: boolean = true;
 
   constructor(
     private authGuard: AuthGuard,
@@ -25,6 +26,8 @@ export class CheckoutComponent {
     });
   }
 
-  
+  togglePay(): void {
+    this.payNow = !this.payNow;
+  }
 
 }
