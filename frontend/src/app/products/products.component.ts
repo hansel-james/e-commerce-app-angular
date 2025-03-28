@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'; 
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProductCardComponent } from './product-card/product-card.component';
@@ -36,30 +36,20 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.queryParamsSubscription = this.route.queryParams.subscribe(queryParams => {
-      // Safely read page & limit from params or set defaults
-      this.limit = +(queryParams['limit'] || 10);
+      // Extract page and limit safely with defaults
       this.currentPage = +(queryParams['page'] || 1);
-
-      if (this.currentPage < 1) {
-        // Redirect to page 1 if invalid
-        this.router.navigate([], {
-          queryParams: { ...queryParams, page: 1 },
-          queryParamsHandling: 'merge',
-        });
-        return;
-      }
-
+      this.limit = +(queryParams['limit'] || 10);
       this.skeletonArray = Array.from({ length: this.limit }, (_, i) => i);
-      this.loadProducts();
+      this.loadProducts(queryParams);
     });
   }
 
-  loadProducts(): void {
+  loadProducts(queryParams: { [key: string]: any } = {}): void {
     this.isLoading = true;
-    this.productService.getProducts({ page: this.currentPage.toString(), limit: this.limit.toString() }).subscribe({
+    this.productService.getProducts(queryParams).subscribe({
       next: (data) => {
         this.products = data.products;
-        this.currentPage = data.currentPage;
+        this.currentPage = data.currentPage;   // ✅ Server driven or fallback to query param
         this.totalPages = data.totalPages;
         this.isLoading = false;
       },
@@ -71,18 +61,16 @@ export class ProductsComponent implements OnInit, OnDestroy {
     });
   }
 
-  setPage(page: number): void {
-    if (page < 1 || page > this.totalPages) return;
-
+  goToPage(page: number): void {
+    // ✅ Clamp page between 1 and totalPages
+    page = Math.max(1, Math.min(page, this.totalPages));
     this.router.navigate([], {
-      queryParams: { page, limit: this.limit },
+      queryParams: { ...this.route.snapshot.queryParams, page }, // merge other params like search, limit etc.
       queryParamsHandling: 'merge',
     });
   }
 
   ngOnDestroy(): void {
-    if (this.queryParamsSubscription) {
-      this.queryParamsSubscription.unsubscribe();
-    }
+    this.queryParamsSubscription?.unsubscribe();
   }
 }
