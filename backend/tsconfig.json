@@ -1,5 +1,5 @@
 {
-  "include": ["./**/*"],
+  "include": ["./**/*", "src/types/express.d.ts"],
   "compilerOptions": {
     "target": "ES6",
     "module": "CommonJS",

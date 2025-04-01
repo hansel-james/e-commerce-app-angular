@@ -3,11 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthGuard } from '../auth.guard';
 import { isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs';
+import { Cart } from './cart.service';
 
 interface Order {
     _id: string,
     userId: string,
     cartId: string,
+    cart: Cart,
     shippingAddress: string,
     paymentStatus: string,
     orderStatus: string,
@@ -20,7 +22,7 @@ interface Order {
   providedIn: 'root',
 })
 export class OrderService {
-  private apiUrl = 'https://e-com-app-backend-five.vercel.app/api/orders';
+  private apiUrl = 'http://localhost:5000/api/orders';
 
   constructor(
     private http: HttpClient, 
@@ -42,8 +44,13 @@ export class OrderService {
     return this.http.get<Order[]>(`${this.apiUrl}`, { headers: this.getHeaders() });
   }
 
-  placeOrder(): Observable<Order> {
-    return this.http.post<Order>(`${this.apiUrl}`, { headers: this.getHeaders() });
+  placeOrder(orderData: {
+    shippingAddress: string;
+    paymentStatus: string;
+    orderStatus: string;
+    totalPrice: string;
+  }): Observable<Order> {
+      return this.http.post<Order>(`${this.apiUrl}`, orderData, { headers: this.getHeaders() });
   }
 
   getOrder(orderId: string): Observable<Order> {

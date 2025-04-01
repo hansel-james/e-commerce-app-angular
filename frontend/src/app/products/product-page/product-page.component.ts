@@ -85,7 +85,9 @@ export class ProductPageComponent implements OnInit, AfterViewInit {
         },
         error: (error) => {
           console.error('Error adding:', error);
-          this.authGuard.logout();
+          if(error.status === 401) {
+            this.authGuard.logout();
+          }
         }
       });
       // console.log('added to cart successfully');

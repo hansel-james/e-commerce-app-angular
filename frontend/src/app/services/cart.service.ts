@@ -26,7 +26,7 @@ export interface Cart {
   providedIn: 'root',
 })
 export class CartService {
-  private apiUrl = 'https://e-com-app-backend-five.vercel.app/api/carts';
+  private apiUrl = 'http://localhost:5000/api/carts';
 
   constructor(private http: HttpClient, private authGuard: AuthGuard, @Inject(PLATFORM_ID) private platformId: object) {}
 
@@ -43,6 +43,10 @@ export class CartService {
   // Fetch the user's cart
   getCart(): Observable<Cart> {
     return this.http.get<Cart>(`${this.apiUrl}/${this.authGuard['userId']}`, { headers: this.getHeaders() });
+  }
+
+  getCartById(id: string): Observable<Cart> {
+    return this.http.get<Cart>(`${this.apiUrl}/cart/${id}`, { headers: this.getHeaders() });
   }
 
   // Add an item to the cart

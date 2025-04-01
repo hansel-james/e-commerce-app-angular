@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { ThemesComponent } from "./themes/themes.component";
 import { AuthGuard } from '../auth.guard';
 import { DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   standalone: true, // Standalone component support
-  imports: [ThemesComponent, DatePipe],
+  imports: [ThemesComponent, DatePipe, RouterLink],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })

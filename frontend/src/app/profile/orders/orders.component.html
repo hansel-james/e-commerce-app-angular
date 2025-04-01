@@ -1,0 +1,46 @@
+<div class="flex justify-center">
+    <div
+      class="lg:w-3/4 w-full border border-base-content/30 p-6 rounded-4xl hover:border-base-content active:border-base-content duration-500 transition-all m-2"
+    >
+      <h1 class="text-2xl mx-16 shadow-2xs">Orders</h1>
+  
+      @if (isLoading) {
+        <div class="space-y-4">
+          <div class="skeleton h-12 w-full"></div>
+          <div class="skeleton h-12 w-full"></div>
+          <div class="skeleton h-12 w-full"></div>
+        </div>
+      } @else {
+        @if (orders.length > 0) {
+          <div class="overflow-x-auto">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Total Price</th>
+                  <th>Status</th>
+                  <th>Ordered On</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (order of orders; track order._id) {
+                  <tr
+                    class="hover:bg-base-300 hover:text-primary transition-all duration-300 active:bg-base-300 active:text-primary"
+                    [routerLink]="'/profile/orders/' + order._id"
+                  >
+                    <td>{{ order._id }}</td>
+                    <td>{{ order.totalPrice | currency }}</td>
+                    <td>{{ order.orderStatus }}</td>
+                    <td>{{ order.createdAt | date:'medium' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="text-center text-gray-500">No orders found.</div>
+        }
+      }
+    </div>
+  </div>
+  

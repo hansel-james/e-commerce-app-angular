@@ -6,12 +6,24 @@ import { AuthGuard } from './auth.guard';
 import { ProfileComponent } from './profile/profile.component';
 import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { OrdersComponent } from './profile/orders/orders.component';
+import { OrderPageComponent } from './profile/orders/order-page/order-page.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { 
         path: 'profile', 
         component: ProfileComponent,
+        canActivate: [AuthGuard],
+    },
+    {
+        path: 'profile/orders',
+        loadComponent: () => import('./profile/orders/orders.component').then(m => m.OrdersComponent),
+        canActivate: [AuthGuard],
+    },
+    {
+        path: 'profile/orders/:orderId',
+        component: OrderPageComponent,
         canActivate: [AuthGuard],
     },
     { 

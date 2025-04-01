@@ -1,4 +1,5 @@
-import { Request, Response } from "express";
+import { Response } from "express";
+import { Request } from "../express";
 import User from "../models/user.model";
 import jwt from "jsonwebtoken";
 
@@ -24,6 +25,10 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
             { expiresIn: "48h" }
         );
 
+        req.user = {
+            id: user._id.toString(),
+        }
+
         res.status(201).json({ message: "User created", token });
     } catch (error) {
         res.status(500).json({ error: "Signup failed" });
@@ -45,6 +50,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             process.env.JWT_SECRET as string,
             { expiresIn: "48h" }
         );
+
+        req.user = {
+            id: user._id.toString(),
+        }
 
         res.status(200).json({ message: "Login successful", token });
     } catch (error) {

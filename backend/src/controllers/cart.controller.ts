@@ -1,4 +1,5 @@
-import { Request, Response } from "express";
+import { Response } from "express";
+import { Request } from "../express";
 import Cart from "../models/cart.model";
 import Product from "../models/product.model";
 import mongoose from "mongoose";
@@ -26,6 +27,28 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+export const getCartById = async(req: Request, res: Response): Promise<void> => {
+    try {
+        const { cartId } = req.params;
+        const { id } = req.user;
+        const cart = await Cart.findOne({ userId: id, _id: cartId })
+            .populate({
+                path: "items.product",
+                model: Product,
+                select: "_id name price imageUrl description categories"
+            });
+        if (!cart) {
+            res.status(404).json('cart not found!');
+            return;
+        }
+    
+        res.status(200).json(cart);
+    } catch (error) {
+        console.error('error retrieving cart by id : ', error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
 
 // Buy cart (mark as sold)
 export const buyCart = async (req: Request, res: Response): Promise<void> => {

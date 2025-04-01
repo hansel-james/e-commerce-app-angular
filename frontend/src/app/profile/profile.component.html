@@ -28,7 +28,13 @@
                         {{ user.createdAt | date:'medium' }}
                     }
                 </li>
-    
+
+                <li class="list-row hover:text-primary hover:shadow-md hover:shadow-secondary
+                active:text-primary active:shadow-md active:shadow-secondary
+                transition-all duration-500" routerLink="/profile/orders">
+                    <strong>Your Orders</strong> 
+                </li>
+
             </ul>
         </div>
     </div>    

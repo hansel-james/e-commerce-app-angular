@@ -1,12 +1,25 @@
-import { Component, ElementRef, ViewChildren, QueryList, Renderer2, AfterViewInit, AfterViewChecked, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ElementRef, ViewChildren, QueryList, Renderer2, AfterViewInit, AfterViewChecked, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
+import { RouterModule } from '@angular/router';
+
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  description: string;
+  categories: string[];
+  imageUrl: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  imports: [RouterModule]
 })
-export class HomeComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
+export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
   @ViewChildren('movableText') movableTextElements!: QueryList<ElementRef>;
   @ViewChildren('welcomeText') welcomeTextElements!: QueryList<ElementRef>;
   @ViewChild('touchBox') touchBox!: ElementRef;
@@ -19,8 +32,22 @@ export class HomeComponent implements AfterViewInit, AfterViewChecked, OnDestroy
   private welcomeTextListeners = new Map<HTMLElement, (() => void)[]>();
   private touchBoxListeners: (() => void)[] = [];
   private carouselListeners: (() => void)[] = [];
+  products: Product[] | null = null;
+  isLoading: boolean = true;
 
-  constructor(private renderer: Renderer2, private productService: ProductService) {}
+  constructor(private renderer: Renderer2, private productService: ProductService) { }
+  ngOnInit(): void {
+    this.isLoading = true;
+    this.productService.getProducts().subscribe({
+      next: (data) => {
+        this.products = data.products;
+        this.isLoading = false;
+      }, 
+      error: (error) => {
+        console.error('error loading home products : ', error);
+      }
+    })
+  }
 
   ngAfterViewInit() {
     this.initializeMovableText();

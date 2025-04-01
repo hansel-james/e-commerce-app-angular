@@ -53,7 +53,9 @@ export class CartComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading cart:', error);
-        this.authGuard.logout();
+        if(error.status === 401) {
+          this.authGuard.logout();
+        }
       }
     });
   }
@@ -74,7 +76,9 @@ export class CartComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading cart:', error);
-        this.authGuard.logout();
+        if(error.status === 401) {
+          this.authGuard.logout();
+        }
       }
     });
   }
@@ -94,7 +98,9 @@ export class CartComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading cart:', error);
-        this.authGuard.logout();
+        if(error.status === 401) {
+          this.authGuard.logout();
+        }
       }
     })
   }
@@ -115,7 +121,9 @@ export class CartComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading cart:', error);
-        this.authGuard.logout();
+        if(error.status === 401) {
+          this.authGuard.logout();
+        }
       }
     })
   }
