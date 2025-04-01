@@ -6,6 +6,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server // ❌ No prerendering for product pages, use SSR instead
   },
   {
+    path: 'profile/orders/:orderId',
+    renderMode: RenderMode.Server // ❌ No prerendering for product pages, use SSR instead
+  },
+  {
     path: '**',
     renderMode: RenderMode.Prerender // ✅ Prerender all other routes
   }
