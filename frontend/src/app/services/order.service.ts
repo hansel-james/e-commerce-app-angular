@@ -22,7 +22,7 @@ interface Order {
   providedIn: 'root',
 })
 export class OrderService {
-  private apiUrl = 'http://localhost:5000/api/orders';
+  private apiUrl = 'https://e-com-app-backend-five.vercel.app/api/orders';
 
   constructor(
     private http: HttpClient, 

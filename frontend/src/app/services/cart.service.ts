@@ -26,7 +26,7 @@ export interface Cart {
   providedIn: 'root',
 })
 export class CartService {
-  private apiUrl = 'http://localhost:5000/api/carts';
+  private apiUrl = 'https://e-com-app-backend-five.vercel.app/api/carts';
 
   constructor(private http: HttpClient, private authGuard: AuthGuard, @Inject(PLATFORM_ID) private platformId: object) {}
 
