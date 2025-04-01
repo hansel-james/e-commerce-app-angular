@@ -35,12 +35,10 @@ export class OrderPageComponent implements OnInit {
       this.orderService.getOrder(this.orderId).subscribe({
         next: (order) => {
           this.order = order;
-          console.log('order is : ', order);
           this.cartService.getCartById(this.order.cartId).subscribe({
             next: (cart) => {
               this.cart = cart;
               this.isLoading = false;
-              console.log('cart is : ', cart);
             },
             error: (error) => {
               console.error('error getting cart by id : ', error);

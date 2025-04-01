@@ -59,7 +59,7 @@ export class CheckoutComponent implements OnInit {
 
     this.orderService.placeOrder(orderData).subscribe({
       next: () => {
-        this.router.navigate(['/order-success']);
+        this.router.navigate(['/profile/orders']);
       },
       error: (error) => {
         console.error('Error placing order:', error);
