@@ -2,7 +2,7 @@
     <div
       class="lg:w-3/4 w-full border border-base-content/30 p-6 rounded-4xl hover:border-base-content active:border-base-content duration-500 transition-all m-2"
     >
-      <h1 class="text-2xl mx-16 shadow-2xs">Orders</h1>
+      <h1 class="text-4xl mx-16 shadow-2xs">Orders</h1>
   
       @if (isLoading) {
         <div class="space-y-4">
@@ -12,7 +12,7 @@
         </div>
       } @else {
         @if (orders.length > 0) {
-          <div class="overflow-x-auto">
+          <div class="overflow-x-auto m-4">
             <table class="table">
               <thead>
                 <tr>

@@ -38,7 +38,10 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked, O
   constructor(private renderer: Renderer2, private productService: ProductService) { }
   ngOnInit(): void {
     this.isLoading = true;
-    this.productService.getProducts().subscribe({
+    const queryParams = {
+      // sort: 'price-high-to-low'
+    };
+    this.productService.getProducts(queryParams).subscribe({
       next: (data) => {
         this.products = data.products;
         this.isLoading = false;

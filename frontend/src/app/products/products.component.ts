@@ -5,15 +5,16 @@ import { ProductCardComponent } from './product-card/product-card.component';
 import { ProductCardSkeletonComponent } from './product-card-skeleton/product-card-skeleton.component';
 import { ProductSidebarComponent } from './product-sidebar/product-sidebar.component';
 import { ProductService } from '../services/product.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   standalone: true,
-  imports: [ProductCardComponent, ProductSidebarComponent, ProductCardSkeletonComponent], 
+  imports: [ProductCardComponent, ProductSidebarComponent, ProductCardSkeletonComponent, CommonModule],
   styleUrls: ['./products.component.css'],
 })
-export class ProductsComponent implements OnInit, OnDestroy {  
+export class ProductsComponent implements OnInit, OnDestroy {
   products: any[] = [];
   totalPages: number = 1;
   currentPage: number = 1;
@@ -21,6 +22,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   isLoading = true;
   skeletonArray: number[] = [];
   isSortMenuOpen: boolean = false;
+  selectedSort: string = ''; // Holds the current sort value
 
   private queryParamsSubscription!: Subscription;
 
@@ -30,15 +32,35 @@ export class ProductsComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
 
-  toggleSortMenu(): boolean {
-    return this.isSortMenuOpen = !this.isSortMenuOpen;
+  toggleSortMenu(): void {
+    this.isSortMenuOpen = !this.isSortMenuOpen;
+  }
+
+  // Method to handle sort option selection
+  onSortChange(sortOption: string): void {
+    const queryParams = { ...this.route.snapshot.queryParams };
+
+    if (sortOption) {
+      queryParams['sort'] = sortOption;
+    } else {
+      // If no sort selected, avoid adding 'sort' param
+      if (queryParams['sort']) {
+        delete queryParams['sort'];
+      }
+    }
+
+    this.router.navigate([], {
+      queryParams: queryParams,
+      queryParamsHandling: 'merge', // Merge with existing params (like page, limit)
+    });
   }
 
   ngOnInit(): void {
     this.queryParamsSubscription = this.route.queryParams.subscribe(queryParams => {
-      // Extract page and limit safely with defaults
+      // Extract page, limit, and sort safely with defaults
       this.currentPage = +(queryParams['page'] || 1);
       this.limit = +(queryParams['limit'] || 10);
+      this.selectedSort = queryParams['sort'] || ''; // Set the selected sort option
       this.skeletonArray = Array.from({ length: this.limit }, (_, i) => i);
       this.loadProducts(queryParams);
     });
